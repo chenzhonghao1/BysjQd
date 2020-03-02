@@ -10,9 +10,13 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    //为了让后端能够访问到前端的资源，需要配置跨域支持
+    //注意这里面 /api是你自定义的，写成什么都可以。target 设置你调用的接口域名和端口号。
+    //这里理解成用‘^/api’代替target里面的地址，后面组件中我们调接口时直接用api代替 。
+    //比如我要调用’http://localhost:8888/dictionaryType‘，直接写‘/api/dictionaryType’即可。
     proxyTable: {
       '/api': {
-        target: 'http://localhost:8443',
+        target: 'http://localhost:8888',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

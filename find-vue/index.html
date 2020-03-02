@@ -7,6 +7,8 @@
   </head>
   <body>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
+    <!-- 最先访问index.html文件，id为app的挂载点，之后我们的Vue根实例就会挂载到该挂载点上也就是App.vue,这里会先去main.js这个项目的入口文件
+    在main.js中，新建了一个Vue实例，在Vue实例中，通过 #app 告诉该实例要挂载的地方,实例中注册了一个局部组件App，这个局部组件App是当前目录下
+    的App.vue,起模板是什么呢？模板就是组件App.vue中的template中的内容。（template会替代原来的的挂载点处的内容）-->
   </body>
 </html>

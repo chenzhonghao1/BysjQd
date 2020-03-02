@@ -1,16 +1,15 @@
 <template>
-    <div>
-      Hello World!
-    </div>
+  <div>
+    <router-view/>
+  </div>
 </template>
 
 <script>
   export default {
-    name: 'AppIndex'
+    name: 'AdminHome'
   }
 </script>
 
 <style scoped>
 
 </style>
-

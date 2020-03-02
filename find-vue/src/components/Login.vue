@@ -4,15 +4,19 @@
            label-width="0px">
     <h3 class="login_title">失物招领系统</h3>
     <el-form-item>
-      <el-input type="text" v-model="loginForm.username"
-                auto-complete="off" placeholder="账号" ></el-input>
+      <el-input type="text" v-model="loginForm.sjhm"
+                auto-complete="off" placeholder="手机号码" prefix-icon="el-icon-phone-outline"></el-input>
     </el-form-item>
     <el-form-item>
       <el-input type="password" v-model="loginForm.password"
-                auto-complete="off" placeholder="密码" ></el-input>
+                auto-complete="off" placeholder="密码" prefix-icon="el-icon-key" clearable show-password></el-input>
     </el-form-item>
+    
     <el-form-item style="width: 100%">
       <el-button type="primary" style="width: 100%;background: #505458;border: none" v-on:click="login">登录</el-button>
+    </el-form-item>
+    <el-form-item style="width: 100%">
+      <el-button type="primary" style="width: 100%;background: #505458;border: none" v-on:click="handleCommand">注册</el-button>
     </el-form-item>
   </el-form>
   
@@ -20,21 +24,22 @@
 </template>
 
 <script>
-
+import {mapMutations} from "vuex";
   export default {
     name: 'Login',
     data () {
       return {
         loginForm: {
-          username: '',
+          sjhm: '',
           password: ''
         },
         responseResult: []
       }
     },
     methods: {
+      ...mapMutations(['changeLogin']),
       login () {
-        if (!this.loginForm.username) {
+        if (!this.loginForm.sjhm) {
           this.$alert('账号不能为空', '登录失败', {
           confirmButtonText: '确定'
         });
@@ -47,15 +52,22 @@
         console.log(this.$store.state)
         this.$axios
           .post('/login', {
-            username: this.loginForm.username,
+            sjhm: this.loginForm.sjhm,
             password: this.loginForm.password
           })
           .then(successResponse => {
             if (successResponse.data.code === 200) {
               // var data = this.loginForm
-              _this.$store.commit('login', _this.loginForm)
+              //_this.$store.commit('login', _this.loginForm)
+              //console.log(successResponse.data)
+              this.changeLogin({ Authorization:successResponse.data.token,sjhm:this.loginForm.sjhm});
               var path = this.$route.query.redirect
-              this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
+              if (successResponse.data.flag === '1'){
+                this.$router.replace({path: path === '/' || path === undefined ? '/userhome' : path})
+              }else{
+                this.$router.replace({path: path === '/' || path === undefined ? '/adminhome' : path})
+              }
+              
             }else if(successResponse.data.code === 400){
                   this.$alert('账号或者密码错误', '登录失败', {
                     confirmButtonText: '确定',
@@ -66,9 +78,11 @@
           })
           .catch(failResponse => {
           })
-      }
-
         }
+      },
+        handleCommand() {
+                this.$router.push('/register');
+            }
         
     }
   }
@@ -84,7 +98,7 @@
     border: 1px solid #eaeaea;
     box-shadow: 0 0 25px #cac6c6;
     margin-left: 250px;
-    margin-top: 90px;
+    margin-top: 150px;
     margin-bottom: 90px;
 
   }
