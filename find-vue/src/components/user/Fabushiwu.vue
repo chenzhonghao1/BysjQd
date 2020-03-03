@@ -23,7 +23,7 @@
             </el-form-item>
             <el-form-item label="所属类型" prop="sslxregion">
                 <el-select v-model="form.sslxregion" placeholder="请选择所属类型" style="position:relative;right:130px;">
-                <el-option
+                    <el-option
                     v-for="item in SslxList"
                     :key="item.id"
                     :label="item.sslx"
@@ -35,6 +35,7 @@
                 <el-input type="textarea" v-model="form.xgms"></el-input>
             </el-form-item>
             <el-upload
+                ref="upload"
                 :headers="headerObj"
                 action="http://localhost:8888/api/uploadfile"
                 :on-preview="handlePreview"
@@ -199,6 +200,9 @@
             if (successResponse.data === 1) {
               this.$message('发帖成功');
               this.$refs.form.resetFields();
+              this.$refs.upload.clearFiles();
+              this.form.pics=[]
+              this.tpdz=''
             }else {
               this.$message('发帖失败，请联系管理员');
               this.$refs.form.resetFields();
@@ -210,6 +214,8 @@
       
       resetForm(formName) {
         this.$refs.form.resetFields();
+        this.$refs.upload.clearFiles();
+        this.form.pics=[]
       }
       
     }
